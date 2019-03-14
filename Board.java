@@ -62,17 +62,5 @@ public class Board {
             blocks[i][j] = in.readInt();
     Board initial = new Board(blocks);
     initial.show();
-
-    // solve the puzzle
-    //Solver solver = new Solver(initial);
-
-    // print solution to standard output
-    //if (!solver.isSolvable())
-    //    StdOut.println("No solution possible");
-    //else {
-    //    StdOut.println("Minimum number of moves = " + solver.moves());
-    //    for (Board board : solver.solution())
-    //        StdOut.println(board);
-    //}
     } // unit tests (not graded)
 }

@@ -1,5 +1,6 @@
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.In;
+import java.lang.Math;
 
 public final class Board {
     private final int[][] board;
@@ -15,7 +16,7 @@ public final class Board {
       }
     }
 
-    public Board(int[][] blocks)           // construct a board from an n-by-n array of blocks
+    public Board(int[][] blocks)          
     {
       if (blocks == null) throw new java.lang.IllegalArgumentException();
       int n = blocks.length;
@@ -23,11 +24,13 @@ public final class Board {
       for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
           board[i][j] = blocks[i][j];
-    }                                       // (where blocks[i][j] = block in row i, column j)
+    }
+
     public int dimension()  
     {
       return board.length;
-    }               // board dimension n
+    }              
+
     public int hamming()  
     {
       int value = 0;
@@ -37,11 +40,19 @@ public final class Board {
           if (this.board[i][j] != i*n + j + 1)
             value++;
       return --value;
-    }                   // number of blocks out of place
+    }            
+       
     public int manhattan()        
     {
-      return 0;
-    }       // sum of Manhattan distances between blocks and goal
+      int value = 0;
+      int n = this.dimension();
+      for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+          if (this.board[i][j] != 0)
+            value += Math.abs(i - (this.board[i][j]-1)/n) + Math.abs(j - (this.board[i][j]-1)%n);
+      return value;
+    }      
+
     public boolean isGoal()  
     {
       return false;
@@ -69,5 +80,6 @@ public final class Board {
     Board initial = new Board(blocks);
     initial.show();
     System.out.println("hamming = " + initial.hamming());
+    System.out.println("manhattan = " + initial.manhattan());
     } // unit tests (not graded)
 }

@@ -1,12 +1,12 @@
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.In;
 
-public class Board {
-    private int[][] board;
+public final class Board {
+    private final int[][] board;
 
     private void show()    
     {
-      int n = board.length;
+      int n = board.length; 
       for (int i = 0; i < n; i++)
       {
         for (int j = 0; j < n; j++)
@@ -30,7 +30,13 @@ public class Board {
     }               // board dimension n
     public int hamming()  
     {
-      return 0;
+      int value = 0;
+      int n = this.dimension();
+      for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+          if (this.board[i][j] != i*n + j + 1)
+            value++;
+      return --value;
     }                   // number of blocks out of place
     public int manhattan()        
     {
@@ -62,5 +68,6 @@ public class Board {
             blocks[i][j] = in.readInt();
     Board initial = new Board(blocks);
     initial.show();
+    System.out.println("hamming = " + initial.hamming());
     } // unit tests (not graded)
 }

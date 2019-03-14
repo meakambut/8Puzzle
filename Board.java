@@ -26,7 +26,7 @@ public class Board {
     }                                       // (where blocks[i][j] = block in row i, column j)
     public int dimension()  
     {
-      return 0;
+      return board.length;
     }               // board dimension n
     public int hamming()  
     {

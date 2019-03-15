@@ -55,8 +55,15 @@ public final class Board {
 
     public boolean isGoal()  
     {
-      return false;
-    }                // is this board the goal board?
+      int n = this.dimension();
+      for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+          if (!(i == n-1 && j == n-1))
+            if (board[i][j] != i*n + j + 1)
+              return false;
+      return true;
+    }               
+
     /*public Board twin()
     {
       return null;
@@ -81,5 +88,6 @@ public final class Board {
     initial.show();
     System.out.println("hamming = " + initial.hamming());
     System.out.println("manhattan = " + initial.manhattan());
+    System.out.println("is the board the goal board: " + initial.isGoal());
     } // unit tests (not graded)
 }

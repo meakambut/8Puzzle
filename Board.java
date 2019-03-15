@@ -78,8 +78,19 @@ public final class Board {
 
     public boolean equals(Object y)  
     {
-      return false;
-    }        // does this board equal y?
+      if (y == this) return true;
+      if (y == null) return false;
+      if (y.getClass() != this.getClass()) return false;
+      Board yBoard = (Board) y;
+      if (yBoard.dimension() != this.dimension()) return false;
+      int n = this.dimension();
+      for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+          if (yBoard.board[i][j] != this.board[i][j])
+            return false;
+      return true;
+    }       
+
     //public Iterable<Board> neighbors()     // all neighboring boards
     //public String toString()               // string representation of this board (in the output format specified below)
 
@@ -99,5 +110,6 @@ public final class Board {
     System.out.println("is the board the goal board: " + initial.isGoal());
     System.out.println("twin board: ");
     initial.twin().show();
+    System.out.println("equals: " + initial.equals(initial.twin()));
     }
 }

@@ -64,10 +64,18 @@ public final class Board {
       return true;
     }               
 
-    /*public Board twin()
+    public Board twin()
     {
-      return null;
-    }*/                      // a board that is obtained by exchanging any pair of blocks
+      int n = this.dimension();
+      int[][] twinBoard = new int[n][n];
+      for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+          twinBoard[i][j] = this.board[i][j];
+      twinBoard[0][0] = this.board[0][1];
+      twinBoard[0][1] = this.board[0][0];
+      return new Board(twinBoard);
+    }                    
+
     public boolean equals(Object y)  
     {
       return false;
@@ -89,5 +97,7 @@ public final class Board {
     System.out.println("hamming = " + initial.hamming());
     System.out.println("manhattan = " + initial.manhattan());
     System.out.println("is the board the goal board: " + initial.isGoal());
-    } // unit tests (not graded)
+    System.out.println("twin board: ");
+    initial.twin().show();
+    }
 }

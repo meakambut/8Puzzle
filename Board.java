@@ -1,9 +1,13 @@
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.In;
 import java.lang.Math;
+import java.util.Stack;
+import java.util.Iterator;
 
-public final class Board {
+public final class Board 
+{
     private final int[][] board;
+    private Stack<Board> neighborsList = new Stack<Board>();
 
     private void show()    
     {
@@ -24,6 +28,7 @@ public final class Board {
       for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
           board[i][j] = blocks[i][j];
+      
     }
 
     public int dimension()  
@@ -91,7 +96,68 @@ public final class Board {
       return true;
     }       
 
-    //public Iterable<Board> neighbors()     // all neighboring boards
+    public Iterator<Board> neighbors()
+    {
+      int n = this.dimension();
+      int[][] neighboringBoard = new int[n][n];
+
+      for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+          neighboringBoard[i][j] = this.board[i][j];
+      outerloop:
+      for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+        {
+          if (this.board[i][j] == 0)
+            {
+              if (i > 0)
+              {
+                neighboringBoard[i-1][j] = this.board[i][j];
+                neighboringBoard[i][j] = this.board[i-1][j]; 
+                neighborsList.push(new Board(neighboringBoard));
+                neighboringBoard[i-1][j] = this.board[i-1][j];
+                neighboringBoard[i][j] = this.board[i][j]; 
+              }
+              
+              if (i < n - 1)
+              {
+                neighboringBoard[i+1][j] = this.board[i][j];
+                neighboringBoard[i][j] = this.board[i+1][j]; 
+                neighborsList.push(new Board(neighboringBoard));
+                neighboringBoard[i+1][j] = this.board[i+1][j];
+                neighboringBoard[i][j] = this.board[i][j]; 
+              }
+
+              if (j > 0)
+              {
+                neighboringBoard[i][j-1] = this.board[i][j];
+                neighboringBoard[i][j] = this.board[i][j-1]; 
+                neighborsList.push(new Board(neighboringBoard)); 
+                neighboringBoard[i][j-1] = this.board[i][j-1];
+                neighboringBoard[i][j] = this.board[i][j]; 
+              }
+
+              if (j < n - 1)
+              {
+                neighboringBoard[i][j+1] = this.board[i][j];
+                neighboringBoard[i][j] = this.board[i][j+1]; 
+                neighborsList.push(new Board(neighboringBoard));
+                neighboringBoard[i][j+1] = this.board[i][j+1];
+                neighboringBoard[i][j] = this.board[i][j]; 
+              }
+              break outerloop;
+            }  
+        }
+      return new ListNeighbors();
+    }
+
+    private class ListNeighbors implements Iterator<Board>    
+    {        
+      public void remove() {}
+      public boolean hasNext() { return !neighborsList.isEmpty(); }                    
+      public Board next() { return neighborsList.pop(); }    
+    }
+
     //public String toString()               // string representation of this board (in the output format specified below)
 
     public static void main(String[] args)
@@ -111,5 +177,12 @@ public final class Board {
     System.out.println("twin board: ");
     initial.twin().show();
     System.out.println("equals: " + initial.equals(initial.twin()));
+    Iterator<Board> it = initial.neighbors();
+    
+    while (it.hasNext())
+    {
+      System.out.println("has neighbors left");
+      it.next().show();
+    }
     }
 }

@@ -158,31 +158,41 @@ public final class Board
       public Board next() { return neighborsList.pop(); }    
     }
 
-    //public String toString()               // string representation of this board (in the output format specified below)
+    public String toString() 
+    {     
+      int n = this.dimension();
+      StringBuilder s = new StringBuilder();
+      s.append(n + "\n");
+      for (int i = 0; i < n; i++) 
+      {
+        for (int j = 0; j < n; j++) 
+          s.append(String.format("%2d ", this.board[i][j]));
+        s.append("\n");
+      }
+      return s.toString();
+    }
 
     public static void main(String[] args)
     {
       // create initial board from file
-    In in = new In(args[0]);
-    int n = in.readInt();
-    int[][] blocks = new int[n][n];
-    for (int i = 0; i < n; i++)
+      In in = new In(args[0]);
+      int n = in.readInt();
+      int[][] blocks = new int[n][n];
+      for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
-            blocks[i][j] = in.readInt();
-    Board initial = new Board(blocks);
-    initial.show();
-    System.out.println("hamming = " + initial.hamming());
-    System.out.println("manhattan = " + initial.manhattan());
-    System.out.println("is the board the goal board: " + initial.isGoal());
-    System.out.println("twin board: ");
-    initial.twin().show();
-    System.out.println("equals: " + initial.equals(initial.twin()));
-    Iterator<Board> it = initial.neighbors();
+          blocks[i][j] = in.readInt();
+      Board initial = new Board(blocks);
+      initial.show();
+      System.out.println("hamming = " + initial.hamming());
+      System.out.println("manhattan = " + initial.manhattan());
+      System.out.println("is the board the goal board: " + initial.isGoal());
+      System.out.println("twin board: ");
+      initial.twin().show();
+      System.out.println("equals: " + initial.equals(initial.twin()));
+      Iterator<Board> it = initial.neighbors();
     
-    while (it.hasNext())
-    {
-      System.out.println("has neighbors left");
-      it.next().show();
-    }
+      while (it.hasNext())
+        System.out.println(it.next().toString());
+    
     }
 }

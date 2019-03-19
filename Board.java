@@ -4,7 +4,7 @@ import java.lang.Math;
 import java.util.Stack;
 import java.util.Iterator;
 
-public final class Board 
+public final class Board
 {
     private final int[][] board;
     private Stack<Board> neighborsList = new Stack<Board>();
@@ -96,7 +96,7 @@ public final class Board
       return true;
     }       
 
-    public Iterator<Board> neighbors()
+    public Iterable<Board> neighbors()
     {
       int n = this.dimension();
       int[][] neighboringBoard = new int[n][n];
@@ -148,14 +148,7 @@ public final class Board
               break outerloop;
             }  
         }
-      return new ListNeighbors();
-    }
-
-    private class ListNeighbors implements Iterator<Board>    
-    {        
-      public void remove() {}
-      public boolean hasNext() { return !neighborsList.isEmpty(); }                    
-      public Board next() { return neighborsList.pop(); }    
+      return neighborsList;
     }
 
     public String toString() 
@@ -189,10 +182,12 @@ public final class Board
       System.out.println("twin board: ");
       initial.twin().show();
       System.out.println("equals: " + initial.equals(initial.twin()));
-      Iterator<Board> it = initial.neighbors();
-    
-      while (it.hasNext())
-        System.out.println(it.next().toString());
+      //Iterator<Board> it = initial.neighbors();
+     
+      for (Board b : initial.neighbors())
+        System.out.println(b.toString());
+      //while (it.hasNext())
+        //System.out.println(it.next().toString());
     
     }
 }

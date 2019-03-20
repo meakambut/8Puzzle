@@ -6,6 +6,7 @@ import java.util.Iterator;
 public class Solver 
 {
     private int minMoves;
+    private boolean solvableFlag;
     private class Node implements Comparable<Node>
     {
       public int moves;
@@ -39,29 +40,45 @@ public class Solver
       } 
     }
 
-    public Solver(Board initial)           // find a solution to the initial board (using the A* algorithm)
+    public Solver(Board initial)     
     {
       MinPQ<Node> PQ = new MinPQ<Node>();
- 
+      MinPQ<Node> PQtwin = new MinPQ<Node>();
+      Node currentTwin = new Node(initial.twin(), null, 0);
       Node current = new Node(initial, null, 0);
-      int movesCounter = 0;
-      while (!current.board.isGoal())
+      int movesCounter = 0, movesCounterTwin = 0;
+      while (!current.board.isGoal() && !currentTwin.board.isGoal())
       {
         movesCounter++;
+        movesCounterTwin++;
         for (Board b : current.board.neighbors())
           if(!b.equals(current.predecessor))
-            PQ.insert(new Node(b, current.board, movesCounter));          
+            PQ.insert(new Node(b, current.board, movesCounter));    
+        for (Board b : currentTwin.board.neighbors())
+          if(!b.equals(currentTwin.predecessor))
+            PQtwin.insert(new Node(b, currentTwin.board, movesCounterTwin));          
         current = PQ.delMin();
+        currentTwin = PQtwin.delMin();
         movesCounter = current.moves;
+        movesCounterTwin = currentTwin.moves;
       }
       this.minMoves = movesCounter;
-      System.out.println("goal board: \n" + current.board.toString());
-      System.out.println("moves made: " + movesCounter); 
-      
+      this.solvableFlag = current.board.isGoal();      
     }
-    //public boolean isSolvable()            // is the initial board solvable?
+    
+    public boolean isSolvable()            
+    { 
+      return this.solvableFlag;
+    }
+
     public int moves()
-    { return this.minMoves; }                     // min number of moves to solve initial board; -1 if unsolvable
+    { 
+      if(this.isSolvable())
+        return this.minMoves; 
+      else
+        return -1;
+    }      
+              
     //public Iterable<Board> solution()      // sequence of boards in a shortest solution; null if unsolvable
     public static void main(String[] args) // solve a slider puzzle (given below)
     {
@@ -74,5 +91,13 @@ public class Solver
       Board initial = new Board(blocks);
       System.out.println("initial: \n" + initial.toString());
       Solver solver = new Solver(initial);
+      if (!solver.isSolvable())
+        StdOut.println("No solution possible");
+      else 
+      {
+        StdOut.println("Minimum number of moves = " + solver.moves());
+        //for (Board board : solver.solution())
+          //  StdOut.println(board);
+      }
     }
 }

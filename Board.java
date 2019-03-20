@@ -27,8 +27,7 @@ public final class Board
       board = new int[n][n];
       for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
-          board[i][j] = blocks[i][j];
-      
+          board[i][j] = blocks[i][j]; 
     }
 
     public int dimension()  
@@ -76,8 +75,22 @@ public final class Board
       for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
           twinBoard[i][j] = this.board[i][j];
-      twinBoard[0][0] = this.board[0][1];
-      twinBoard[0][1] = this.board[0][0];
+      if (this.board[0][0] != 0)
+        if (this.board[0][1] != 0)
+        {
+          twinBoard[0][0] = this.board[0][1];
+          twinBoard[0][1] = this.board[0][0];
+        }
+        else 
+        {
+          twinBoard[0][0] = this.board[1][0];
+          twinBoard[1][0] = this.board[0][0];
+        }
+      else
+      {
+        twinBoard[0][1] = this.board[1][1];
+        twinBoard[1][1] = this.board[0][1];
+      }
       return new Board(twinBoard);
     }                    
 

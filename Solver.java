@@ -1,20 +1,22 @@
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.MinPQ;
+import java.util.Stack;
 import java.util.Iterator;
 
 public class Solver 
 {
     private int minMoves;
     private boolean solvableFlag;
+    private Node finalBoard;
     private class Node implements Comparable<Node>
     {
       public int moves;
       public int manhattanValue;
-      public Board predecessor;
+      public Node predecessor;
       public Board board;
       
-      public Node(Board b, Board prev, int moves)
+      public Node(Board b, Node prev, int moves)
       {  
         this.board = b; 
         this.predecessor = prev;
@@ -52,18 +54,33 @@ public class Solver
         movesCounter++;
         movesCounterTwin++;
         for (Board b : current.board.neighbors())
-          if(!b.equals(current.predecessor))
-            PQ.insert(new Node(b, current.board, movesCounter));    
+          if (current.predecessor != null)
+          {
+            if(!b.equals(current.predecessor.board))
+               PQ.insert(new Node(b, current, movesCounter)); 
+          }
+          else 
+            PQ.insert(new Node(b, current, movesCounter)); 
         for (Board b : currentTwin.board.neighbors())
-          if(!b.equals(currentTwin.predecessor))
-            PQtwin.insert(new Node(b, currentTwin.board, movesCounterTwin));          
+          if (currentTwin.predecessor != null)
+          {
+            if(!b.equals(currentTwin.predecessor.board))
+              PQtwin.insert(new Node(b, currentTwin, movesCounterTwin)); 
+          }
+          else 
+            PQtwin.insert(new Node(b, currentTwin, movesCounterTwin));          
         current = PQ.delMin();
         currentTwin = PQtwin.delMin();
         movesCounter = current.moves;
         movesCounterTwin = currentTwin.moves;
       }
-      this.minMoves = movesCounter;
-      this.solvableFlag = current.board.isGoal();      
+
+      this.solvableFlag = current.board.isGoal();   
+      if (this.solvableFlag)
+      {
+        this.minMoves = movesCounter;   
+        this.finalBoard = current;
+      }
     }
     
     public boolean isSolvable()            
@@ -79,8 +96,21 @@ public class Solver
         return -1;
     }      
               
-    //public Iterable<Board> solution()      // sequence of boards in a shortest solution; null if unsolvable
-    public static void main(String[] args) // solve a slider puzzle (given below)
+    public Iterable<Board> solution()      
+    {
+      if (!this.isSolvable())
+        return null;
+      Stack<Board> sol = new Stack<Board>();
+      Node current = this.finalBoard;
+      while (current != null)
+      {
+        sol.push(current.board);
+        current = current.predecessor;
+      }
+      return sol;
+    }
+
+    public static void main(String[] args) 
     {
       In in = new In(args[0]);
       int n = in.readInt();
@@ -96,8 +126,9 @@ public class Solver
       else 
       {
         StdOut.println("Minimum number of moves = " + solver.moves());
-        //for (Board board : solver.solution())
-          //  StdOut.println(board);
+        for (Board board : solver.solution())
+          StdOut.println(board);
+        StdOut.println("Minimum number of moves = " + solver.moves());
       }
     }
 }

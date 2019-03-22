@@ -43,7 +43,7 @@ public class Solver
 
     public Solver(Board initial)     
     {
-      if (initial == null) throw new java.lang.NullPointerException();
+      if (initial == null) throw new java.lang.IllegalArgumentException();
       MinPQ<Node> PQ = new MinPQ<Node>();
       MinPQ<Node> PQtwin = new MinPQ<Node>();
       Node currentTwin = new Node(initial.twin(), null, 0);

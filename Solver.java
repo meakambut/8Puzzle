@@ -2,6 +2,8 @@ import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.MinPQ;
 import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
 import java.util.Iterator;
 
 public class Solver 
@@ -44,6 +46,7 @@ public class Solver
 
     public Solver(Board initial)     
     {
+      if (initial == null) throw new java.lang.NullPointerException();
       MinPQ<Node> PQ = new MinPQ<Node>();
       MinPQ<Node> PQtwin = new MinPQ<Node>();
       Node currentTwin = new Node(initial.twin(), null, 0);
@@ -100,35 +103,39 @@ public class Solver
     {
       if (!this.isSolvable())
         return null;
-      Stack<Board> sol = new Stack<Board>();
+      Stack<Board> reversedSol = new Stack<Board>();
       Node current = this.finalBoard;
       while (current != null)
       {
-        sol.push(current.board);
+        reversedSol.push(current.board);
         current = current.predecessor;
       }
+
+      Stack<Board> sol = new Stack<Board>();
+      while (!reversedSol.isEmpty())
+        sol.push(reversedSol.pop());
       return sol;
     }
 
     public static void main(String[] args) 
     {
-      In in = new In(args[0]);
-      int n = in.readInt();
-      int[][] blocks = new int[n][n];
-      for (int i = 0; i < n; i++)
+       In in = new In(args[0]);
+    int n = in.readInt();
+    int[][] blocks = new int[n][n];
+    for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
             blocks[i][j] = in.readInt();
-      Board initial = new Board(blocks);
-      System.out.println("initial: \n" + initial.toString());
-      Solver solver = new Solver(initial);
-      if (!solver.isSolvable())
+    Board initial = new Board(blocks);
+
+    // solve the puzzle
+    Solver solver = new Solver(initial);
+ 
+    if (!solver.isSolvable())
         StdOut.println("No solution possible");
-      else 
-      {
+    else {
         StdOut.println("Minimum number of moves = " + solver.moves());
         for (Board board : solver.solution())
-          StdOut.println(board);
-        StdOut.println("Minimum number of moves = " + solver.moves());
-      }
+            StdOut.println(board);
+    }
     }
 }

@@ -9,17 +9,6 @@ public final class Board
     private final int[][] board;
     private Stack<Board> neighborsList = new Stack<Board>();
 
-    private void show()    
-    {
-      int n = board.length; 
-      for (int i = 0; i < n; i++)
-      {
-        for (int j = 0; j < n; j++)
-          System.out.print(board[i][j] + " ");
-        System.out.println();
-      }
-    }
-
     public Board(int[][] blocks)          
     {
       if (blocks == null) throw new java.lang.IllegalArgumentException();
@@ -180,27 +169,6 @@ public final class Board
 
     public static void main(String[] args)
     {
-      // create initial board from file
-      In in = new In(args[0]);
-      int n = in.readInt();
-      int[][] blocks = new int[n][n];
-      for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-          blocks[i][j] = in.readInt();
-      Board initial = new Board(blocks);
-      initial.show();
-      System.out.println("hamming = " + initial.hamming());
-      System.out.println("manhattan = " + initial.manhattan());
-      System.out.println("is the board the goal board: " + initial.isGoal());
-      System.out.println("twin board: ");
-      initial.twin().show();
-      System.out.println("equals: " + initial.equals(initial.twin()));
-      //Iterator<Board> it = initial.neighbors();
-     
-      for (Board b : initial.neighbors())
-        System.out.println(b.toString());
-      //while (it.hasNext())
-        //System.out.println(it.next().toString());
-    
+      
     }
 }

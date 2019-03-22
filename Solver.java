@@ -2,14 +2,11 @@ import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.MinPQ;
 import java.util.Stack;
-import java.util.Queue;
-import java.util.LinkedList;
-import java.util.Iterator;
 
 public class Solver 
 {
     private int minMoves;
-    private boolean solvableFlag;
+    private final boolean solvableFlag;
     private Node finalBoard;
     private class Node implements Comparable<Node>
     {
@@ -59,7 +56,7 @@ public class Solver
         for (Board b : current.board.neighbors())
           if (current.predecessor != null)
           {
-            if(!b.equals(current.predecessor.board))
+            if (!b.equals(current.predecessor.board))
                PQ.insert(new Node(b, current, movesCounter)); 
           }
           else 
@@ -67,7 +64,7 @@ public class Solver
         for (Board b : currentTwin.board.neighbors())
           if (currentTwin.predecessor != null)
           {
-            if(!b.equals(currentTwin.predecessor.board))
+            if (!b.equals(currentTwin.predecessor.board))
               PQtwin.insert(new Node(b, currentTwin, movesCounterTwin)); 
           }
           else 
@@ -93,7 +90,7 @@ public class Solver
 
     public int moves()
     { 
-      if(this.isSolvable())
+      if (this.isSolvable())
         return this.minMoves; 
       else
         return -1;

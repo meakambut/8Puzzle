@@ -1,13 +1,9 @@
-import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.In;
-import java.lang.Math;
 import java.util.Stack;
-import java.util.Iterator;
 
 public final class Board
 {
     private final int[][] board;
-    private Stack<Board> neighborsList = new Stack<Board>();
+    private final Stack<Board> neighborsList = new Stack<Board>();
 
     public Board(int[][] blocks)          
     {
@@ -42,7 +38,7 @@ public final class Board
       for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
           if (this.board[i][j] != 0)
-            value += Math.abs(i - (this.board[i][j]-1)/n) + Math.abs(j - (this.board[i][j]-1)%n);
+            value += Math.abs(i - (this.board[i][j]-1)/n) + Math.abs(j - (this.board[i][j]-1) % n);
       return value;
     }      
 
@@ -168,7 +164,5 @@ public final class Board
     }
 
     public static void main(String[] args)
-    {
-      
-    }
+    { return; }
 }
